@@ -1,0 +1,29 @@
+
+redis与spring的整合：spring-data-redis整合、jedis整合
+
+1、引用的依赖不同：
+spring-data-redis
+    <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-redis</artifactId>
+        <version>1.8.9.RELEASE</version>
+    </dependency>
+jedis:
+    <dependency>
+        <groupId>redis.clients</groupId>
+        <artifactId>jedis</artifactId>
+        <version>2.9.0</version>
+        <type>jar</type>
+        <scope>compile</scope>
+    </dependency>
+2、管理jedis实例方式、操作redis服务不同：
+spring-data-redis：通过spring封装的 RedisTemplate 操作redis服务，redisTemplate.execute(...)，
+                   使用到了JedisConnectionFactory工厂类管理，代码段中充斥大量与业务无关的模版片段代码，代码冗余
+jedis：通过redis.clients.jedis.JedisPool，即通过池来管理，通过池对象获取jedis实例，Jedis jedis = jedisPool.getResource()
+       然后通过jedis实例直接操作redis服务，剔除了与业务无关的冗余代码
+
+总结：spring-data-redis与spring的整合，更像mybatis与spring整合，通过工厂，创建实例，再操作实例。
+     而jedis，更像spring与MySQL结合，通过操作连接池，获取实例操作数据库
+
+
+
